@@ -23,12 +23,20 @@ const inv = (date) =>{
 }
 // your first API endpoint... 
 app.get("/api/:date", function (req, res) {
-  let date = new Date(req.params.date)
-  if(inv(date)){
-    date=new Date(+req.params.date)
+  let dateParam = req.params.date;
+  let date;
+
+  // Check if the parameter is a timestamp
+  if (!isNaN(dateParam)) {
+    date = new Date(parseInt(dateParam));
+  } else {
+    // Try creating a date object from the date string
+    date = new Date(dateParam);
   }
-  if(inv(date)){
-    res.json({error: "Invalid Date"})
+
+  // Check if the date is valid
+  if (inv(date)) {
+    res.json({ error: "Invalid Date" });
     return;
   }
 
